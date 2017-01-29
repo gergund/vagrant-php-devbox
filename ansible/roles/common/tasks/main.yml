@@ -1,0 +1,36 @@
+---
+
+- name: Copy the EPEL repository definition
+  copy: src=epel.repo dest=/etc/yum.repos.d/
+
+- name: Create the GPG key for EPEL
+  copy: src=RPM-GPG-KEY-EPEL-6 dest=/etc/pki/rpm-gpg
+  
+- name: Run yum upgrade for all packages
+  yum: name=* state=latest update_cache=yes
+  when:
+        update_packages == True
+
+- name: Disable SElinux
+  copy: src=selinux dest=/etc/selinux/config 
+
+- name: Setenforce 0
+  command: setenforce 0
+  become: true
+  become_user: root
+
+- name: Install default set of software
+  yum: name={{ item }} state=present
+  with_items:
+   - mc
+   - atop
+   - htop
+   - tar
+   - sudo
+   - rsync
+   - git
+   - sysstat
+   - strace
+   - tcpdump
+   - nc
+   - fabric

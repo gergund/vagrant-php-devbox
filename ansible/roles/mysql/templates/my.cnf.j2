@@ -1,0 +1,36 @@
+# {{ ansible_managed }}
+
+[mysqld]
+datadir=/var/lib/mysql
+socket=/var/lib/mysql/mysql.sock
+user=mysql
+# Disabling symbolic-links is recommended to prevent assorted security risks
+symbolic-links=0
+
+key_buffer_size = {{ mysql_key_buffer_size }}
+max_allowed_packet = {{ mysql_max_allowed_packet }}
+max_connections = {{ mysql_max_connections }}
+table_open_cache = {{ mysql_table_open_cache }}
+thread_concurrency = {{ mysql_thread_concurrency }}
+query_cache_limit = {{ mysql_query_cache_limit }}
+query_cache_size = {{ mysql_query_cache_size }}
+innodb_buffer_pool_size = {{ mysql_innodb_buffer_pool_size }}
+innodb_doublewrite = {{ mysql_innodb_doublewrite }}
+innodb_file_per_table = {{ mysql_innodb_file_per_table }}
+innodb-flush-method = O_DIRECT
+innodb_flush_log_at_trx_commit = {{ mysql_innodb_flush_log_at_trx_commit }}
+## Replication
+server-id = {{ mysql_server_id  }}
+log-bin = bin-log
+log-bin-index = bin-log.index
+relay-log = relay-log
+relay-log-index = relay-log.index
+expire-logs-days = 5
+binlog-format = ROW
+## slave options
+log_slave_updates = 1
+slave-skip-errors = 1032,0,1548,1008,1062
+
+[mysqld_safe]
+log-error=/var/log/mysqld.log
+pid-file=/var/run/mysqld/mysqld.pid

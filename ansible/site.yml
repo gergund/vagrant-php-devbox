@@ -1,0 +1,8 @@
+---
+- name: preparing management node local
+  hosts: localhost
+  roles:
+        - common
+        - nginx
+        - php-fpm
+        - mysql

@@ -1,0 +1,42 @@
+- name: Copy the Remi repository definition
+  copy: src=remi.repo dest=/etc/yum.repos.d/
+
+- name: Copy the Remi repository definition for PHP-7.0
+  copy: src=remi-php70.repo dest=/etc/yum.repos.d/
+
+- name: Copy the Remi repository definition for safe
+  copy: src=remi-safe.repo dest=/etc/yum.repos.d/
+
+- name: Create the GPG key for Remi
+  copy: src=RPM-GPG-KEY-remi dest=/etc/pki/rpm-gpg
+
+- name: Install default PHP-5.6 set
+  yum: name={{ item }} enablerepo=remi-php56 state=present
+  with_items:
+   - php.x86_64
+   - php-bcmath.x86_64
+   - php-cli.x86_64
+   - php-common.x86_64
+   - php-fpm.x86_64
+   - php-gd.x86_64
+   - php-gmp.x86_64
+   - php-intl.x86_64
+   - php-mbstring.x86_64
+   - php-mcrypt.x86_64
+   - php-mysqlnd.x86_64
+   - php-opcache.x86_64
+   - php-pdo.x86_64
+   - php-pear.noarch
+   - php-pecl-memcached.x86_64
+   - php-pecl-redis.x86_64
+   - php-soap.x86_64
+   - php-process.x86_64
+   - php-xml.x86_64
+   - php-xmlrpc.x86_64
+
+- name: Configure and Restart PHP-FPM
+  template: src=www.conf.j2 dest=/etc/php-fpm.d/www.conf
+  notify: restart php-fpm
+
+- name: PHP-FPM autostart
+  service: name=php-fpm state=started enabled=yes

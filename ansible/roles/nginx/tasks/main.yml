@@ -1,0 +1,23 @@
+- name: Copy the Nginx repository definition
+  copy: src=nginx.repo dest=/etc/yum.repos.d/
+
+- name: Install latest Nginx from official repo
+  yum: name={{ item }} state=present
+  with_items:
+        - nginx
+
+- name: Move default.conf
+  shell: if [ -f /etc/nginx/conf.d/default.conf ]; then mv /etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf.bak; fi
+
+- name: Move example_ssl.conf
+  shell:  if [ -f /etc/nginx/conf.d/example_ssl.conf ]; then mv /etc/nginx/conf.d/example_ssl.conf /etc/nginx/conf.d/example_ssl.conf.bak; fi
+
+- name: Configure and Restart Nginx
+  template: src=nginx.conf.j2 dest=/etc/nginx/nginx.conf
+  notify: restart nginx
+
+- name: Configure Nginx Vhost
+  template: src=vhost.conf.j2 dest=/etc/nginx/conf.d/vhost.conf
+
+- name: Nginx autostart
+  service: name=nginx state=started enabled=yes

@@ -1,0 +1,32 @@
+update_packages: False
+
+php_max_execution_time: 600
+php_memory_limit: 768M
+php_error_reporting: On
+php_display_errors: Off
+php_log_errors: On
+php_post_max_size: 16M
+php_upload_max_filesize: 16M
+
+php_pm: static
+php_max_children: 8
+php_fpm_socket: 127.0.0.1:9000
+
+vhost_user: vagrant
+vhost_listen_port: 80
+vhost_server_name: dev.loc
+vhost_document_root: /vagrant/www/
+
+mysql_key_buffer_size: 64M
+mysql_max_allowed_packet: 32M
+mysql_max_connections: 300
+mysql_table_open_cache: 10000
+mysql_thread_concurrency: 8
+mysql_query_cache_limit: 1M
+mysql_query_cache_size: 32M
+mysql_innodb_buffer_pool_size: 128M
+mysql_innodb_doublewrite: true
+mysql_innodb_file_per_table: 1
+mysql_innodb_flush_log_at_trx_commit: 0
+mysql_server_id: 11
+mysql_root_password: password

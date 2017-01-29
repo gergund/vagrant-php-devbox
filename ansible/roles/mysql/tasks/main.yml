@@ -1,0 +1,52 @@
+---
+
+- name: Copy the Percona repository definition
+  copy: src=percona-release.repo dest=/etc/yum.repos.d/
+
+- name: Create the GPG key for Percona
+  copy: src=RPM-GPG-KEY-Percona dest=/etc/pki/rpm-gpg
+
+- name: Install default set of software
+  yum: name={{ item }} state=present
+  with_items:
+   - Percona-Server-server-56.x86_64
+   - Percona-Server-shared-56.x86_64
+   - Percona-Server-client-56.x86_64
+   - percona-toolkit.noarch
+   - percona-xtrabackup.x86_64
+   - MySQL-python
+
+- name: Configure and Restart MySQL
+  template: src=my.cnf.j2 dest=/etc/my.cnf
+
+- name: Start MySQL if it's not running
+  shell: if [ -z `pidof mysqld` ]; then service mysql start && sleep 5; fi
+  
+- name: Set the root password.
+  mysql_user: name=root password="{{ mysql_root_password }}" host="localhost"
+  ignore_errors: yes
+  notify: restart mysql
+
+- name: Set .my.cnf for root
+  template: src=.my.cnf.j2 dest=/root/.my.cnf
+
+- name: Delete anonymous MySQL server user for {{ inventory_hostname }}
+  mysql_user: user="" host="{{ inventory_hostname }}" state="absent" login_user="root" login_password="{{ mysql_root_password }}"
+
+- name: Secure the MySQL root user for IPV6 localhost (::1)
+  mysql_user: user="root" password="{{ mysql_root_password }}" host="::1" login_user="root" login_password="{{ mysql_root_password }}"
+
+- name: Secure the MySQL root user for IPV4 localhost (127.0.0.1)
+  mysql_user: user="root" password="{{ mysql_root_password }}" host="127.0.0.1" login_user="root" login_password="{{ mysql_root_password }}"
+
+- name: Secure the MySQL root user for localhost domain (localhost)
+  mysql_user: user="root" password="{{ mysql_root_password }}" host="localhost" login_user="root" login_password="{{ mysql_root_password }}"
+
+- name: Secure the MySQL root user for {{ inventory_hostname }} domain
+  mysql_user: user="root" password="{{ mysql_root_password }}" host="{{ inventory_hostname }}" login_user="root" login_password="{{ mysql_root_password }}"
+
+- name: Remove the MySQL test database
+  mysql_db: db=test state=absent login_user="root" login_password="{{ mysql_root_password }}"
+
+- name: MySQL autostart
+  service: name=mysql state=started enabled=yes
