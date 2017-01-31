@@ -10,3 +10,5 @@ Developer Vagrant instance all-in-one
 
  - To init instance:
 	$vagrant up
+
+P.S. In case of Linux or Windows have to define provision file method in Vagrantfile
