@@ -14,8 +14,8 @@ php_fpm_socket: 127.0.0.1:9000
 
 vhost_user: vagrant
 vhost_listen_port: 80
-vhost_server_name: dev.loc
-vhost_document_root: /vagrant/www/
+vhost_server_name: wrangler.loc
+vhost_document_root: /var/www/wrangler/magento/src/magento
 
 mysql_key_buffer_size: 64M
 mysql_max_allowed_packet: 32M
