@@ -18,9 +18,17 @@ else
 		/usr/bin/sudo yum install -y ansible libselinux-python && /bin/echo 'Install of ansible - done'
 	/bin/echo "Done"
 
-	/bin/echo "Run ansible to provision configuration ..."
-		/usr/bin/sudo /usr/bin/ansible-playbook /vagrant/ansible/site.yml --connection=local
-	/bin/echo "Done"
+	if [ -f /vagrant/ansible/site.yml ]; then
+	    /bin/echo "Run ansible to provision configuration ..."
+		    /usr/bin/sudo /usr/bin/ansible-playbook /vagrant/ansible/site.yml --connection=local
+	    /bin/echo "Done"
+	elif [ -f /vagrant-php-devbox/ansible/site.yml ]; then
+	    bin/echo "Run ansible to provision configuration ..."
+		    /usr/bin/sudo /usr/bin/ansible-playbook /vagrant-php-devbox/ansible/site.yml --connection=local
+	    /bin/echo "Done"
+	else
+	    /bin/echo "Ansible playbook was not found. Check your sharedfoler method."
+	fi
 
 	touch /tmp/.provisioned
 	exit 0
