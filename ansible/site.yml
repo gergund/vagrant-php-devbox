@@ -6,3 +6,4 @@
         - nginx
         - php-fpm
         - mysql
+        - application

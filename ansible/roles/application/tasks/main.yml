@@ -1,0 +1,14 @@
+---
+
+- name: Create project MySQL user
+  mysql_user: name={{ project_mysql_user }} password={{ project_mysql_password }} priv=*.*:ALL host="%"
+
+- name: Create Magento Database
+  mysql_db: name={{ project_mysql_dbname }} state=present
+  ignore_errors: yes
+
+- name: Clean Project directory
+  shell: cd {{ vhost_document_root }} && rm -Rf *
+
+- name: Clone Project git repo
+  git: repo={{ project_repo }} dest={{ vhost_document_root }}

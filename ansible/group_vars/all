@@ -1,5 +1,7 @@
+#[OS] update rpm packages
 update_packages: False
 
+#[PHP stack settings]
 php_max_execution_time: 600
 php_memory_limit: 768M
 php_error_reporting: On
@@ -8,15 +10,25 @@ php_log_errors: On
 php_post_max_size: 16M
 php_upload_max_filesize: 16M
 
+#[PHP-FPM settings]
 php_pm: static
 php_max_children: 8
 php_fpm_socket: 127.0.0.1:9000
 
+#[Webserver Virtual host settings]
 vhost_user: vagrant
 vhost_listen_port: 80
 vhost_server_name: dev.loc
 vhost_document_root: /vagrant/www/
 
+#[Application settings]
+project_repo: https://github.com/gergund/PHP-OOP-Lessons.git
+
+project_mysql_user: dev
+project_mysql_password: dev
+project_mysql_dbname: dev
+
+#[MySQL settings]
 mysql_key_buffer_size: 64M
 mysql_max_allowed_packet: 32M
 mysql_max_connections: 300
@@ -30,3 +42,6 @@ mysql_innodb_file_per_table: 1
 mysql_innodb_flush_log_at_trx_commit: 0
 mysql_server_id: 11
 mysql_root_password: password
+
+#[Redis settings]
+redis_server_maxmemory: 128m

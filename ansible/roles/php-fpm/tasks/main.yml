@@ -33,6 +33,7 @@
    - php-process.x86_64
    - php-xml.x86_64
    - php-xmlrpc.x86_64
+   - php-pecl-xdebug.x86_64
 
 - name: Configure and Restart PHP-FPM
   template: src=www.conf.j2 dest=/etc/php-fpm.d/www.conf

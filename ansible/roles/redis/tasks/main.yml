@@ -1,0 +1,14 @@
+---
+
+- name: Install Redis server
+  yum: name={{ item }} enablerepo=remi state=present
+  with_items:
+   - redis.x86_64
+
+- name: Configure and Restart Redis server
+  template: src=redis.conf.j2 dest=/etc/redis.conf
+  notify: restart redis
+
+- name: Redis server autostart
+  service: name=redis state=started enabled=yes
+
