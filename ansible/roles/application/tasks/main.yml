@@ -12,3 +12,6 @@
 
 - name: Clone Project git repo
   git: repo={{ project_repo }} dest={{ vhost_document_root }}
+
+- name: Install Project
+  shell: cd {{ vhost_document_root }} php -f install.php -- --license_agreement_accepted yes --locale en_US --timezone "America/Los_Angeles" --default_currency USD --db_host localhost --db_name {{ project_mysql_dbname }} --db_user {{ project_mysql_user }} --db_pass {{ project_mysql_passwprd }} --url "http://{{ vhost_server_name }}/" --secure_base_url "http://{{ vhost_server_name }}/"  --use_rewrites yes --use_secure no --use_secure_admin no --admin_lastname Admin --admin_firstname Admin --admin_email "gergund@gmail.com" --admin_username admin --admin_password 123123qa --skip_url_validation

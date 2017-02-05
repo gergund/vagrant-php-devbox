@@ -22,7 +22,7 @@ vhost_server_name: dev.loc
 vhost_document_root: /vagrant/www/
 
 #[Application settings]
-project_repo: https://github.com/gergund/PHP-OOP-Lessons.git
+project_repo: https://github.com/OpenMage/magento-mirror.git
 
 project_mysql_user: dev
 project_mysql_password: dev
